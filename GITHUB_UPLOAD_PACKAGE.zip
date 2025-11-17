@@ -1,0 +1,16 @@
+这是一个包含所有项目文件的压缩包，你可以直接上传到GitHub仓库。
+
+包含文件：
+- dist/index.js (主程序)
+- dist/hub.js (3D打印逻辑)
+- dist/models.js (数据模型)
+- src/ (源代码)
+- vercel.json (部署配置)
+- package.json (项目配置)
+- README.md (项目说明)
+
+上传步骤：
+1. 访问 https://github.com/oppmkj/3d-printer-hub
+2. 点击 "Upload files" 按钮
+3. 拖拽所有文件到上传区域
+4. 提交更改
