@@ -1,246 +1,57 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Printer Hub - 3D打印管理系统</title>
+    <title>3D Printer Hub</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #f0f0f0; 
         }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+        .container { 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
+        .header { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            color: #333; 
         }
-        
-        .header {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            color: white;
-            padding: 30px;
-            text-align: center;
+        .section { 
+            margin-bottom: 30px; 
+            padding: 20px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
         }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
+        .item { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            border-left: 4px solid #007bff; 
         }
-        
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+        .status { 
+            color: #28a745; 
+            font-weight: bold; 
         }
-        
-        .dashboard {
-            padding: 30px;
+        .btn { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 5px; 
         }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            transform: translateY(0);
-            transition: transform 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-card h3 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            opacity: 0.9;
-        }
-        
-        .stat-card .number {
-            font-size: 2.5em;
-            font-weight: bold;
-        }
-        
-        .section {
-            margin-bottom: 30px;
-        }
-        
-        .section h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
-        .card {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            padding: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .card:hover {
-            border-color: #667eea;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
-        }
-        
-        .card h4 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
-        
-        .status {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        
-        .status.idle {
-            background: #e8f5e8;
-            color: #2e7d32;
-        }
-        
-        .status.printing {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-        
-        .status.paused {
-            background: #fce4ec;
-            color: #c2185b;
-        }
-        
-        .progress {
-            margin-top: 15px;
-        }
-        
-        .progress-bar {
-            background: #f0f0f0;
-            border-radius: 10px;
-            height: 8px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-        
-        .add-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-        }
-        
-        .add-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: 500;
-        }
-        
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s ease;
-        }
-        
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-        }
-        
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
-            width: 90%;
-        }
-        
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5em;
-            cursor: pointer;
-            color: #999;
-        }
-        
-        .close:hover {
-            color: #333;
+        .btn:hover { 
+            background: #0056b3; 
         }
     </style>
 </head>
@@ -248,227 +59,93 @@
     <div class="container">
         <div class="header">
             <h1>🖨️ 3D Printer Hub</h1>
-            <p>专业3D打印管理系统 - 管理您的打印机和耗材</p>
+            <p>专业3D打印管理系统</p>
         </div>
         
-        <div class="dashboard">
-            <div class="stats">
-                <div class="stat-card">
-                    <h3>活跃打印机</h3>
-                    <div class="number" id="printerCount">2</div>
-                </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                    <h3>可用耗材</h3>
-                    <div class="number" id="spoolCount">3</div>
-                </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                    <h3>进行中任务</h3>
-                    <div class="number" id="jobCount">1</div>
-                </div>
+        <div class="section">
+            <h2>🖨️ 打印机状态</h2>
+            <div class="item">
+                <h3>Ender-3 Pro</h3>
+                <p>状态: <span class="status">打印中</span></p>
+                <p>进度: 65% | 预计剩余: 45分钟</p>
             </div>
-            
-            <div class="section">
-                <h2>🖨️ 打印机管理</h2>
-                <button class="add-btn" onclick="showAddPrinter()">+ 添加打印机</button>
-                <div class="grid" id="printerGrid">
-                    <div class="card">
-                        <h4>Ender-3 Pro</h4>
-                        <span class="status printing">打印中</span>
-                        <div class="progress">
-                            <div>进度: 65%</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 65%"></div>
-                            </div>
-                        </div>
-                        <p style="margin-top: 10px; color: #666;">喷嘴: 210°C | 热床: 60°C</p>
-                    </div>
-                    <div class="card">
-                        <h4>Prusa i3 MK3S+</h4>
-                        <span class="status idle">空闲</span>
-                        <p style="margin-top: 10px; color: #666;">喷嘴: 25°C | 热床: 25°C</p>
-                    </div>
-                </div>
+            <div class="item">
+                <h3>Prusa i3 MK3S+</h3>
+                <p>状态: <span class="status" style="color: #ffc107;">空闲</span></p>
+                <p>准备就绪，可开始新任务</p>
             </div>
-            
-            <div class="section">
-                <h2>🧵 耗材管理</h2>
-                <button class="add-btn" onclick="showAddSpool()">+ 添加耗材</button>
-                <div class="grid" id="spoolGrid">
-                    <div class="card">
-                        <h4>PLA - 红色</h4>
-                        <p>品牌: eSun</p>
-                        <p>重量: 1kg</p>
-                        <div class="progress">
-                            <div>剩余: 750g (75%)</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 75%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h4>ABS - 蓝色</h4>
-                        <p>品牌: SUNLU</p>
-                        <p>重量: 1kg</p>
-                        <div class="progress">
-                            <div>剩余: 450g (45%)</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 45%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h4>PETG - 透明</h4>
-                        <p>品牌: Prusament</p>
-                        <p>重量: 1kg</p>
-                        <div class="progress">
-                            <div>剩余: 920g (92%)</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 92%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <button class="btn">+ 添加打印机</button>
+        </div>
+        
+        <div class="section">
+            <h2>🧵 耗材管理</h2>
+            <div class="item">
+                <h3>PLA - 红色 (eSun)</h3>
+                <p>剩余: 750g / 1000g (75%)</p>
+                <p>状态: 充足</p>
             </div>
-            
-            <div class="section">
-                <h2>📋 打印任务</h2>
-                <button class="add-btn" onclick="showAddJob()">+ 新建任务</button>
-                <div class="grid" id="jobGrid">
-                    <div class="card">
-                        <h4>机械齿轮模型</h4>
-                        <span class="status printing">打印中</span>
-                        <p>打印机: Ender-3 Pro</p>
-                        <p>耗材: PLA红色</p>
-                        <p>预计时间: 2小时15分钟</p>
-                        <div class="progress">
-                            <div>完成度: 65%</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 65%"></div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="item">
+                <h3>ABS - 蓝色 (SUNLU)</h3>
+                <p>剩余: 450g / 1000g (45%)</p>
+                <p>状态: 需要关注</p>
+            </div>
+            <div class="item">
+                <h3>PETG - 透明 (Prusament)</h3>
+                <p>剩余: 920g / 1000g (92%)</p>
+                <p>状态: 充足</p>
+            </div>
+            <button class="btn">+ 添加耗材</button>
+        </div>
+        
+        <div class="section">
+            <h2>📋 当前任务</h2>
+            <div class="item">
+                <h3>机械齿轮模型</h3>
+                <p>打印机: Ender-3 Pro</p>
+                <p>耗材: PLA红色</p>
+                <p>开始时间: 14:30 | 预计完成: 16:15</p>
+            </div>
+            <button class="btn">+ 新建任务</button>
+        </div>
+        
+        <div class="section">
+            <h2>📊 系统统计</h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
+                <div>
+                    <h3>2</h3>
+                    <p>活跃打印机</p>
+                </div>
+                <div>
+                    <h3>3</h3>
+                    <p>可用耗材</p>
+                </div>
+                <div>
+                    <h3>1</h3>
+                    <p>进行中任务</p>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- 添加打印机模态框 -->
-    <div id="addPrinterModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('addPrinterModal')">&times;</span>
-            <h2>添加打印机</h2>
-            <div class="form-group">
-                <label>打印机名称</label>
-                <input type="text" id="printerName" placeholder="例如: Ender-3 Pro">
-            </div>
-            <div class="form-group">
-                <label>型号</label>
-                <input type="text" id="printerModel" placeholder="例如: Creality Ender-3">
-            </div>
-            <button class="add-btn" onclick="addPrinter()">添加打印机</button>
-        </div>
-    </div>
-    
-    <!-- 添加耗材模态框 -->
-    <div id="addSpoolModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('addSpoolModal')">&times;</span>
-            <h2>添加耗材</h2>
-            <div class="form-group">
-                <label>材料类型</label>
-                <select id="materialType">
-                    <option value="PLA">PLA</option>
-                    <option value="ABS">ABS</option>
-                    <option value="PETG">PETG</option>
-                    <option value="TPU">TPU</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>颜色</label>
-                <input type="text" id="spoolColor" placeholder="例如: 红色">
-            </div>
-            <div class="form-group">
-                <label>品牌</label>
-                <input type="text" id="spoolBrand" placeholder="例如: eSun">
-            </div>
-            <button class="add-btn" onclick="addSpool()">添加耗材</button>
-        </div>
-    </div>
-    
-    <!-- 添加任务模态框 -->
-    <div id="addJobModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('addJobModal')">&times;</span>
-            <h2>新建打印任务</h2>
-            <div class="form-group">
-                <label>任务名称</label>
-                <input type="text" id="jobName" placeholder="例如: 机械齿轮">
-            </div>
-            <div class="form-group">
-                <label>选择打印机</label>
-                <select id="jobPrinter">
-                    <option value="ender3">Ender-3 Pro</option>
-                    <option value="prusai3">Prusa i3 MK3S+</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>选择耗材</label>
-                <select id="jobSpool">
-                    <option value="pla-red">PLA - 红色</option>
-                    <option value="abs-blue">ABS - 蓝色</option>
-                    <option value="petg-clear">PETG - 透明</option>
-                </select>
-            </div>
-            <button class="add-btn" onclick="addJob()">创建任务</button>
+        
+        <div style="text-align: center; margin-top: 30px; color: #666;">
+            <p>✅ 系统运行正常 | 最后更新: <span id="timestamp"></span></p>
         </div>
     </div>
     
     <script>
-        // 显示模态框
-        function showAddPrinter() {
-            document.getElementById('addPrinterModal').style.display = 'block';
-        }
+        // 更新时间戳
+        document.getElementById('timestamp').textContent = new Date().toLocaleTimeString();
         
-        function showAddSpool() {
-            document.getElementById('addSpoolModal').style.display = 'block';
-        }
-        
-        function showAddJob() {
-            document.getElementById('addJobModal').style.display = 'block';
-        }
-        
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-        
-        // 添加功能（模拟）
-        function addPrinter() {
-            alert('打印机添加功能已触发！在实际应用中，这里会保存到数据库。');
-            closeModal('addPrinterModal');
-        }
-        
-        function addSpool() {
-            alert('耗材添加功能已触发！在实际应用中，这里会保存到数据库。');
-            closeModal('addSpoolModal');
-        }
-        
-        function addJob() {
-            alert('打印任务创建功能已触发！在实际应用中，这里会保存到数据库。');
-            closeModal('addJobModal');
-        }
-        
-        // 点击模态框外部关闭
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
-        }
-        
-        // 模拟实时更新
+        // 每30秒更新一次时间
         setInterval(function() {
-            // 这里可以添加实时数据更新逻辑
-            console.log('系统运行正常...');
-        }, 5000);
+            document.getElementById('timestamp').textContent = new Date().toLocaleTimeString();
+        }, 30000);
+        
+        // 按钮点击事件
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('功能开发中！在实际应用中，这里会打开相应的管理界面。');
+            });
+        });
     </script>
 </body>
 </html>
